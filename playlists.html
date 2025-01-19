@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<div>
+    <h1>Playlists Page</h1>
+    <h3>{{session['user_display_name']}}</h3>
+    <h4>{{session['user_id']}}</h4>
+</div>
+
+<div>
+    <button><a href="/playlists">Playlist To Text</a></button>
+    <button><a href="/toListenTo">To Listen To Playlist</a></button>
+    <button><a href="/SpotifyStats">Spofity Stats</a></button>
+</div>
+{% endblock %}
+
+{% block body %}
+
+<!-- ADD USERS PHOTO -->
+<div>
+    <h2>Number of Playlists: {{total}}</h2>
+    <ul>
+        {% for playlist in playlists %}
+        <li>
+            <div>
+                <h5>
+                    <a href = "/playlistToText/{{playlist['id']}}">{{playlist['name']}} </a>
+                </h5>
+                <p>Number of Tracks: {{playlist['tracks']['total']}}</p>
+                <p>Type: {{playlist['type']}}</p>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

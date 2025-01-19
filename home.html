@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block head %}
+{% endblock %}
+
+{% block body %}
+<h1>Welcome to Sam's Spotify Site</h1>
+<h3>{{session['user_display_name']}}</h3>
+<h4>{{session['user_id']}}</h4>
+
+<!-- ADD USERS PHOTO -->
+
+<div>
+    <button><a href="/playlists">Playlist To Text</a></button>
+    <button><a href="/toListenTo">To Listen To Playlist</a></button>
+    <button><a href="/SpotifyStats">Spofity Stats</a></button>
+</div>
+{% endblock %}
