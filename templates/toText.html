@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<h3>{{session['user_display_name']}}</h3>
+<h4>{{session['user_id']}}</h4>
+
+<div>
+    <button><a href="/playlists">Playlist To Text</a></button>
+    <button><a href="/toListenTo">To Listen To Playlist</a></button>
+    <button><a href="/SpotifyStats">Spofity Stats</a></button>
+</div>
+
+{% endblock %}
+
+{% block body %}
+<div>
+    <h1>{{playlistInfo['name']}}</h1>
+    <p>Owner: {{playlistInfo['owner']['display_name']}}</p>
+    <p>Description: {{playlistInfo['description']}}</p>
+    <p>Public: {{playlistInfo['public']}}</p>
+    <p>Collaborative: {{playlistInfo['collaborative']}}</p>
+</div>
+
+<div>
+    <!-- load Tracks -->
+     <h3>Playlist Size: {{tracks['total']}} </h3>
+    <ul>
+        {% for track in tracks['items']%}
+        <li> 
+            <div>
+                <h1>{{track['track']['name']}}</h1>
+                <h3>Album: {{track['track']['album']['name']}} </h3>
+            
+                <!--TODO: Load multiple artists -->
+                <h4>Artists: {{track['track']['artists'][0]['name']}}</h4>
+
+                <p>Added on: {{track['added_at']}}</p>
+                <p>Added by: {{track['added_by']['id']}}</p>
+                <p>Popularity: {{track['track']['popularity']}}</p>
+                
+                <!--TODO: hide if false 
+                <p>Local File: {{track['is_local']}} </p>
+                track['album']['images']
+                -->
+            </div>
+            
+            <img src= "{{track['track']['album']['images'][2]['url']}}">
+
+        </li>
+        {% endfor %}
+    
+    </ul>
+</div>
+
+<!-- ADD USERS PHOTO -->
+
+<div>
+    <button><a href="/playlists">Get Text File</a></button>
+</div>
+{% endblock %}
