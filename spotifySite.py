@@ -6,10 +6,6 @@ from dotenv import load_dotenv
 app = Flask(__name__)
 app.secret_key= 'YNT03OihVBbA5Lo12kewx8KMzDjTVwim'
 
-# CLIENT_ID = 'faa8b2a6844c4219bc4d0954e84d0f29'
-# CLIENT_SECRET = '5598ceb822d64670a11ec9c9d1b937f6'
-
-
 REDIRECT_URI = 'http://127.0.0.1:5000/callback'
 
 AUTH_URL = 'https://accounts.spotify.com/authorize'
@@ -28,7 +24,7 @@ def accessTokenCheck():
             
 def querySpotify(endpoint):
     if type(endpoint) == str:
-        accessTokenCheck
+        accessTokenCheck()
         headers ={
             'Authorization': 'Bearer '+ session['access_token']
         }
@@ -55,7 +51,7 @@ def login():
         'client_id': getClientID(),
         'scope': scope,
         'redirect_uri':REDIRECT_URI,
-        'show_dialog': True
+        #'show_dialog': True
      }
     auth_url = f"{AUTH_URL}?{urllib.parse.urlencode(params)}"
     return redirect(auth_url)
@@ -105,8 +101,8 @@ def refreshToken():
         req_body = {
             'grant_type': 'refresh_token',
             'refresh_token': session['refresh_token'],
-            'client_id': CLIENT_ID,
-            'client_secret': CLIENT_SECRET
+            'client_id': getClientID(),
+            'client_secret': getClientSecret()
         }
 
         response = requests.post(TOKEN_URL, data=req_body)
@@ -144,17 +140,56 @@ def playlists():
 
     return render_template('playlists.html', playlists=playlists, total=total)
 
+#check if sing has tracks
+#TODO generate text file + SEND HTML <Path>
+    #https://linkdoctor.io/create-download-link/
 @app.route('/playlistToText/<string:id>')
 def playlistToText(id):
     response = querySpotify(f'playlists/{id}')
     
     playlistInfo = response.json()
     images = playlistInfo['images']
-    tracks = playlistInfo['tracks']
+    tracks = playlistInfo['tracks']['items'] #list
     
-    playlistInfo.pop('tracks')
-    playlistInfo.pop('images')
+    #print(type(tracks))
 
+    nextPage = playlistInfo['tracks']['next'] 
+
+    print('Next page type: ', type(nextPage))
+
+    try:
+        morePlaylistInfo = requests.get(nextPage, headers={
+            'Authorization': 'Bearer '+ session['access_token']
+        }).json()
+    except:
+        return render_template('toText.html', tracks=tracks, playlistInfo=playlistInfo)
+        
+
+    #TODO proper nextPage check(weed out nextPage = None) || check by # songs vs sizeof tracks
+    while nextPage != 'None': #USE tracks size
+        #open next page
+        print('Page to visit : ', nextPage)
+        if not nextPage:
+            print('no next page loop no as expected')
+
+        #TODO CLEAN UP
+        try:
+            morePlaylistInfo = requests.get(nextPage, headers={
+                'Authorization': 'Bearer '+ session['access_token']
+            }).json()
+        except:
+            break
+
+        moreTracks = morePlaylistInfo['items']
+        #add to tracks ?track data type?
+        tracks.extend(moreTracks)
+        #set nextpage
+        nextPage = morePlaylistInfo['next']
+        print('going to: ', nextPage)
+
+    print('Tracks size: ', len(tracks))
+    
+    #return tracks
     return render_template('toText.html', tracks=tracks, playlistInfo=playlistInfo)
     #return jsonify(tracks)
 

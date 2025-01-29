@@ -19,13 +19,15 @@
     <p>Description: {{playlistInfo['description']}}</p>
     <p>Public: {{playlistInfo['public']}}</p>
     <p>Collaborative: {{playlistInfo['collaborative']}}</p>
+    <p>Size: {{playlistInfo['tracks']['total']}}</p>
+    <!-- <p>Size: {{tracks['total']}}</p> -->
 </div>
 
 <div>
     <!-- load Tracks -->
      <h3>Playlist Size: {{tracks['total']}} </h3>
     <ul>
-        {% for track in tracks['items']%}
+        {% for track in tracks%}
         <li> 
             <div>
                 <h1>{{track['track']['name']}}</h1>
@@ -43,8 +45,6 @@
                 track['album']['images']
                 -->
             </div>
-            
-            <img src= "{{track['track']['album']['images'][2]['url']}}">
 
         </li>
         {% endfor %}
