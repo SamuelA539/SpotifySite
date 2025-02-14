@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<h3>{{session['user_display_name']}}</h3>
+<h4>{{session['user_id']}}</h4>
+
+<div>
+    <button><a href="/playlists">Playlist To Text</a></button>
+    <button><a href="/toListenTo">To Listen To Playlist</a></button>
+    <button><a href="/SpotifyStats">Spofity Stats</a></button>
+</div>
+
+{% endblock %}
+
+{% block body %}
+<div>
+    <div>
+        <p>Playlist being added to: {{session['playlistToAddTo_name']}} </p>
+        <a href="/select_PlaylistToAddTo">
+            <button>Select Playlist</button>
+        </a>
+    </div>
+
+    <div>
+        <form action="/search" method="POST">
+            <div class="searchbar-section">
+                
+                <label for="searchbar">Search For Item To Listen To</label>
+                <input type="text" name="searchbar" id="searchbar">
+                <input type="submit" id="search btn" value="search">
+                
+                <fieldset>
+                    <label for="songsBtn">Songs</label>
+                    <input type="radio" id="songsBtn" name="searchType" value="songs" checked>
+                
+                    <label for="albumsBtn">Albums</label>
+                    <input type="radio" id="albumsBtn" name="searchType" value="albums">
+                
+                    <label for="allBtn">All</label>
+                    <input type="radio" id="allBtn" name="searchType" value="all">
+                </fieldset>
+
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <!-- load Tracks -->
+    <ul>
+        {% for item in results%}
+        <li> 
+            <div>
+                <h1>{{item['name']}}</h1>
+                <h3>Album: {{item['album']['name']}}</h3>
+                <h4>Album Type: {{item['album']['album_type']}}</h4>
+                <p>Track number: {{item['track_number']}} </p>
+                <p>Release Date: {{item['album']['release_date']}} </p>
+            
+                <!--TODO: Load multiple artists -->
+                <h4>Artists: {{item['artists'][0]['name']}}</h4>
+
+                <p>Explicit: {{item[ 'explicit']}}</p>
+                <p>Popularity: {{item['popularity']}}</p>   
+                
+                <form action="/addToPlaylist" method="POST">
+                    <button value="{{item['uri']}}" name="itemToAdd" >Add To playlist</button>
+                </form>
+            </div>
+            {% endfor %}
+        </li> 
+    </ul>
+
+    <button> 
+        Load Next Page (coming soon)
+    </button>
+
+</div>
+
+
+{% endblock %}

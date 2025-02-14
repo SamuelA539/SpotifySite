@@ -1,0 +1,19 @@
+.searchbar-section {
+    /* seachbar portion only */
+    display: flex;
+    flex-direction: column;
+}
+
+
+input {
+    font-size: 1 rem;
+}
+
+.item-cards {
+    /* how to display items */
+    display: grid;
+}
+
+.cards {
+    /* what eac hitem looks like */
+}

@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<h2>Welcome To Listen To</h2>
+
+<div>
+    <button><a href="/playlists">Playlist To Text</a></button>
+    <button><a href="/toListenTo">To Listen To Playlist</a></button>
+    <button><a href="/SpotifyStats">Spofity Stats</a></button>
+</div>
+{% endblock %}
+
+{% block body %}
+<div>
+    <form action="/search" method="POST">
+        <div class="searchbar-section">
+            
+            <label for="searchbar">Search For Item To Listen To</label>
+            <input type="text" name="searchbar" id="searchbar">
+            <input type="submit" id="search btn" value="search">
+            
+            <fieldset>
+                <label for="songsBtn">Songs</label>
+                <input type="radio" id="songsBtn" name="searchType" value="songs" checked>
+            
+                <label for="albumsBtn">Albums</label>
+                <input type="radio" id="albumsBtn" name="searchType" value="albums">
+            
+                <label for="allBtn">All</label>
+                <input type="radio" id="allBtn" name="searchType" value="all">
+            </fieldset>
+
+        </div>
+    </form>
+</div>
+
+<div>
+    <p >playlist being added to: {{session['playlistToAddTo_name']}} <p>
+        <a href="/select_PlaylistToAddTo">
+            <button>Select Playlist</button>
+        </a>
+</div>
+<!-- <form action="/selectPlaylist", method="POST" >
+    <input type="text" name="playlist" id="plaaylistname">
+</form> -->
+
+
+
+{% endblock %}

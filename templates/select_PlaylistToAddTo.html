@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<div>
+    <h1>Playlists Page</h1>
+    <h3>{{session['user_display_name']}}</h3>
+    <h4>{{session['user_id']}}</h4>
+</div>
+
+<div>
+    <button><a href="/playlists">Playlist To Text</a></button>
+    <button><a href="/toListenTo">To Listen To Playlist</a></button>
+    <button><a href="/SpotifyStats">Spofity Stats</a></button>
+</div>
+{% endblock %}
+
+{% block body %}
+
+<!-- ADD USERS PHOTO -->
+<div>
+    <ul>
+        <li>
+            <div>
+                <h5>Custom Playlist</h5>
+                <p>Promise it will be good</p>
+                <p>Will be a part of each of US</p>
+                <!-- ADD form to select -->
+                <form action="/toListenTo" method="POST">
+                    <button value="Custom" name="PlaylistSelected" >Select</button>
+                </form>
+            </div>
+        </li>
+        {% for playlist in playlists %}
+        <li>
+            <div>
+                <h5>{{playlist['name']}}</h5>
+                <p>Number of Tracks: {{playlist['tracks']['total']}}</p>
+                <p>Type: {{playlist['type']}}</p>
+                <!-- ADD form to select -->
+                <form action="/toListenTo" method="POST">
+                    <button value="{{playlist['name'],playlist['id']}}" name="PlaylistSelected" >Select</button>
+                </form>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+    
+
+    <div>
+        <button>Prev</button>
+        <p>{{remaining}}<p>
+        <button>Next</button> 
+    <div>
+</div>
+{% endblock %}

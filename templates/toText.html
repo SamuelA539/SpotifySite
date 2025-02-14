@@ -19,13 +19,17 @@
     <p>Description: {{playlistInfo['description']}}</p>
     <p>Public: {{playlistInfo['public']}}</p>
     <p>Collaborative: {{playlistInfo['collaborative']}}</p>
-    <p>Size: {{playlistInfo['tracks']['total']}}</p>
-    <!-- <p>Size: {{tracks['total']}}</p> -->
+    <p>Playlist Size: {{playlistInfo['tracks']['total']}}</p>
+    
+    <button>
+        get playlist as text file
+    </button>
 </div>
 
 <div>
     <!-- load Tracks -->
      <h3>Playlist Size: {{tracks['total']}} </h3>
+
     <ul>
         {% for track in tracks%}
         <li> 
@@ -41,15 +45,25 @@
                 <p>Popularity: {{track['track']['popularity']}}</p>
                 
                 <!--TODO: hide if false 
+                   Ternary Operator: https://www.geeksforgeeks.org/ternary-operator-in-python/ 
+                   ?CSS backup image: https://css-tricks.com/svg-fallbacks/ 
                 <p>Local File: {{track['is_local']}} </p>
                 track['album']['images']
                 -->
             </div>
-
+            {% endfor %}
         </li>
-        {% endfor %}
+        
     
     </ul>
+    <a href="{{playlistInfo['name']}}.txt" download> 
+        <button>
+            <!-- Download file: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a
+                https://linkdoctor.io/create-download-link/ -->
+            get playlist as text file
+        </button>
+    </a>
+
 </div>
 
 <!-- ADD USERS PHOTO -->
